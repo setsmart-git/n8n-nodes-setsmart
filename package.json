@@ -1,0 +1,63 @@
+{
+  "name": "n8n-nodes-setsmart",
+  "version": "0.1.1",
+  "description": "n8n community node for SetSmart — AI setter for Instagram, WhatsApp and Messenger DMs. Manage contacts, leads, tags and template messages.",
+  "keywords": [
+    "n8n-community-node-package",
+    "setsmart",
+    "instagram",
+    "whatsapp",
+    "dm-automation",
+    "ai-setter",
+    "lead-qualification"
+  ],
+  "license": "MIT",
+  "homepage": "https://setsmart.io",
+  "author": {
+    "name": "SetSmart",
+    "email": "contact@setsmart.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/setsmart-git/n8n-nodes-setsmart.git"
+  },
+  "engines": {
+    "node": ">=20.15"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "npx rimraf dist && tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lintfix": "eslint nodes credentials package.json --fix",
+    "prepublishOnly": "npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/SetSmartApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/SetSmart/SetSmart.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "~8.32.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.3",
+    "gulp": "^5.0.0",
+    "n8n-workflow": "*",
+    "prettier": "^3.5.3",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.8.2"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "bugs": {
+    "url": "https://github.com/setsmart-git/n8n-nodes-setsmart/issues"
+  }
+}
