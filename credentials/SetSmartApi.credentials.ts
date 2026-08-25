@@ -2,6 +2,7 @@ import {
 	IAuthenticateGeneric,
 	ICredentialTestRequest,
 	ICredentialType,
+	Icon,
 	INodeProperties,
 } from 'n8n-workflow';
 
@@ -11,6 +12,8 @@ export class SetSmartApi implements ICredentialType {
 	displayName = 'SetSmart API';
 
 	documentationUrl = 'https://setsmart.io/api-documentation';
+
+	icon: Icon = 'file:setsmart.svg';
 
 	properties: INodeProperties[] = [
 		{

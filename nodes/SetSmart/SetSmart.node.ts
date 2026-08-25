@@ -1,19 +1,21 @@
+import { NodeConnectionTypes } from 'n8n-workflow';
 import type { INodeType, INodeTypeDescription } from 'n8n-workflow';
 
 export class SetSmart implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'SetSmart',
 		name: 'setSmart',
-		icon: 'file:setsmart.png',
+		icon: { light: 'file:setsmart.svg', dark: 'file:setsmart.svg' },
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'AI setter for Instagram, WhatsApp and Messenger DMs. Manage contacts, leads, tags and template messages.',
+		usableAsTool: true,
 		defaults: {
 			name: 'SetSmart',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'setSmartApi',
@@ -48,6 +50,40 @@ export class SetSmart implements INodeType {
 				noDataExpression: true,
 				displayOptions: { show: { resource: ['contact'] } },
 				options: [
+					{
+						name: 'Add Notes',
+						value: 'addNotes',
+						action: 'Add notes to a contact',
+						routing: {
+							request: {
+								method: 'POST',
+								url: '/api/add-notes',
+								body: {
+									contact_id: '={{$parameter.contactId || undefined}}',
+									phone: '={{$parameter.phone || undefined}}',
+									email: '={{$parameter.email || undefined}}',
+									notes: '={{$parameter.notes}}',
+								},
+							},
+						},
+					},
+					{
+						name: 'Add Tag',
+						value: 'addTag',
+						action: 'Add a tag to a contact',
+						routing: {
+							request: {
+								method: 'POST',
+								url: '/api/add-tag-to-conversation',
+								body: {
+									contact_id: '={{$parameter.contactId || undefined}}',
+									phone: '={{$parameter.phone || undefined}}',
+									email: '={{$parameter.email || undefined}}',
+									tag: '={{$parameter.tag}}',
+								},
+							},
+						},
+					},
 					{
 						name: 'Find',
 						value: 'find',
@@ -88,23 +124,6 @@ export class SetSmart implements INodeType {
 						},
 					},
 					{
-						name: 'Add Tag',
-						value: 'addTag',
-						action: 'Add a tag to a contact',
-						routing: {
-							request: {
-								method: 'POST',
-								url: '/api/add-tag-to-conversation',
-								body: {
-									contact_id: '={{$parameter.contactId || undefined}}',
-									phone: '={{$parameter.phone || undefined}}',
-									email: '={{$parameter.email || undefined}}',
-									tag: '={{$parameter.tag}}',
-								},
-							},
-						},
-					},
-					{
 						name: 'Remove Tag',
 						value: 'removeTag',
 						action: 'Remove a tag from a contact',
@@ -117,23 +136,6 @@ export class SetSmart implements INodeType {
 									phone: '={{$parameter.phone || undefined}}',
 									email: '={{$parameter.email || undefined}}',
 									tag: '={{$parameter.tag}}',
-								},
-							},
-						},
-					},
-					{
-						name: 'Add Notes',
-						value: 'addNotes',
-						action: 'Add notes to a contact',
-						routing: {
-							request: {
-								method: 'POST',
-								url: '/api/add-notes',
-								body: {
-									contact_id: '={{$parameter.contactId || undefined}}',
-									phone: '={{$parameter.phone || undefined}}',
-									email: '={{$parameter.email || undefined}}',
-									notes: '={{$parameter.notes}}',
 								},
 							},
 						},
@@ -156,13 +158,13 @@ export class SetSmart implements INodeType {
 						},
 					},
 					{
-						name: 'Turn AI On',
-						value: 'aiOn',
-						action: 'Turn the AI on for a contact',
+						name: 'Turn AI Off',
+						value: 'aiOff',
+						action: 'Turn the AI off for a contact',
 						routing: {
 							request: {
 								method: 'POST',
-								url: '/api/set-ai-on',
+								url: '/api/set-ai-off',
 								body: {
 									contact_id: '={{$parameter.contactId || undefined}}',
 									phone: '={{$parameter.phone || undefined}}',
@@ -172,13 +174,13 @@ export class SetSmart implements INodeType {
 						},
 					},
 					{
-						name: 'Turn AI Off',
-						value: 'aiOff',
-						action: 'Turn the AI off for a contact',
+						name: 'Turn AI On',
+						value: 'aiOn',
+						action: 'Turn the AI on for a contact',
 						routing: {
 							request: {
 								method: 'POST',
-								url: '/api/set-ai-off',
+								url: '/api/set-ai-on',
 								body: {
 									contact_id: '={{$parameter.contactId || undefined}}',
 									phone: '={{$parameter.phone || undefined}}',
@@ -200,9 +202,9 @@ export class SetSmart implements INodeType {
 				displayOptions: { show: { resource: ['lead'] } },
 				options: [
 					{
-						name: 'Get All',
+						name: 'Get Many',
 						value: 'getAll',
-						action: 'Get all leads',
+						action: 'Get many leads',
 						routing: { request: { method: 'GET', url: '/api/leads' } },
 					},
 					{
@@ -230,6 +232,26 @@ export class SetSmart implements INodeType {
 				displayOptions: { show: { resource: ['message'] } },
 				options: [
 					{
+						name: 'Cancel Scheduled',
+						value: 'cancelScheduled',
+						action: 'Cancel a scheduled message',
+						routing: {
+							request: {
+								method: 'POST',
+								url: '/api/cancel-scheduled',
+								body: {
+									id: '={{$parameter.scheduledId}}',
+								},
+							},
+						},
+					},
+					{
+						name: 'List Scheduled',
+						value: 'listScheduled',
+						action: 'List scheduled messages',
+						routing: { request: { method: 'GET', url: '/api/list-scheduled' } },
+					},
+					{
 						name: 'Send Template',
 						value: 'sendTemplate',
 						action: 'Send a template message',
@@ -243,26 +265,6 @@ export class SetSmart implements INodeType {
 									schedule_type: '={{$parameter.scheduleType}}',
 									scheduled_date_time: '={{$parameter.scheduledDateTime || undefined}}',
 									assistant_id: '={{$parameter.assistantId || undefined}}',
-								},
-							},
-						},
-					},
-					{
-						name: 'List Scheduled',
-						value: 'listScheduled',
-						action: 'List scheduled messages',
-						routing: { request: { method: 'GET', url: '/api/list-scheduled' } },
-					},
-					{
-						name: 'Cancel Scheduled',
-						value: 'cancelScheduled',
-						action: 'Cancel a scheduled message',
-						routing: {
-							request: {
-								method: 'POST',
-								url: '/api/cancel-scheduled',
-								body: {
-									id: '={{$parameter.scheduledId}}',
 								},
 							},
 						},
