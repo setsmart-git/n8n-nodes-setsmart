@@ -13,7 +13,7 @@ export class SetSmartApi implements ICredentialType {
 
 	documentationUrl = 'https://setsmart.io/api-documentation';
 
-	icon: Icon = 'file:setsmart.svg';
+	icon: Icon = { light: 'file:setsmart.svg', dark: 'file:setsmart.dark.svg' };
 
 	properties: INodeProperties[] = [
 		{

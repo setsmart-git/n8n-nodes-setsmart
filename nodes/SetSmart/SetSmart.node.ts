@@ -5,7 +5,7 @@ export class SetSmart implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'SetSmart',
 		name: 'setSmart',
-		icon: { light: 'file:setsmart.svg', dark: 'file:setsmart.svg' },
+		icon: { light: 'file:setsmart.svg', dark: 'file:setsmart.dark.svg' },
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',

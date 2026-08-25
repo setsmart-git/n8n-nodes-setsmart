@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-setsmart",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "n8n community node for SetSmart — AI setter for Instagram, WhatsApp and Messenger DMs. Manage contacts, leads, tags and template messages.",
   "keywords": [
     "n8n-community-node-package",
